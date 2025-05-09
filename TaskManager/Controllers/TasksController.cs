@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TaskManager.Interfaces;
 using TaskManager.Models;
-using TaskManager.Services;
 
 namespace TaskManager.Controllers
 {
     public class TasksController : Controller
     {
-        private readonly TaskService _taskService;
+        private readonly ITaskService _taskService;
 
-        public TasksController(TaskService taskService)
+        public TasksController(ITaskService taskService)
         {
             _taskService = taskService;
         }

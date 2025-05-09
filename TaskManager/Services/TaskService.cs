@@ -1,10 +1,9 @@
-﻿using TaskManager.Models;
-using System.Collections.Generic;
-using System.Linq;
+﻿using TaskManager.Interfaces;
+using TaskManager.Models;
 
 namespace TaskManager.Services
 {
-    public class TaskService
+    public class TaskService : ITaskService
     {
         private static List<Tasks> _tasks = new List<Tasks>
         {
@@ -17,7 +16,7 @@ namespace TaskManager.Services
 
         public List<Tasks> GetAll() => _tasks;
 
-        public Tasks GetById(int id) => _tasks.FirstOrDefault(t => t.Id == id);
+        public Tasks? GetById(int id) => _tasks.FirstOrDefault(t => t.Id == id);
 
         public void Add(Tasks task)
         {

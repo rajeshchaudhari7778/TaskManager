@@ -1,9 +1,10 @@
+using TaskManager.Interfaces;
 using TaskManager.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<TaskService>();
+builder.Services.AddSingleton<ITaskService, TaskService>();
 
 var app = builder.Build();
 
