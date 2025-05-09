@@ -16,9 +16,10 @@ pipeline {
         }
         stage('Build') {
             steps {
-                bat 'msbuild TaskManager.sln /p:Configuration=Release'
+                bat 'dotnet build TaskManager.sln -c Release'
             }
         }
+
         stage('Test') {
             steps {
                 bat 'dotnet test TaskManager.Tests/TaskManager.Tests.csproj --logger:"nunit;LogFilePath=TestResults.xml"'
