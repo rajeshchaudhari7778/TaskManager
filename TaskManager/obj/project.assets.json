@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rajesh.chaudhari\\OneDrive - Azilen Technologies Pvt. Ltd\\Desktop\\Final_CourseManagement\\TaskManager\\TaskManager\\TaskManager.csproj",
+      "projectUniqueName": "C:\\Users\\rajesh.chaudhari\\OneDrive - Azilen Technologies Pvt. Ltd\\Desktop\\TaskManagement\\TaskManager\\TaskManager.csproj",
       "projectName": "TaskManager",
-      "projectPath": "C:\\Users\\rajesh.chaudhari\\OneDrive - Azilen Technologies Pvt. Ltd\\Desktop\\Final_CourseManagement\\TaskManager\\TaskManager\\TaskManager.csproj",
+      "projectPath": "C:\\Users\\rajesh.chaudhari\\OneDrive - Azilen Technologies Pvt. Ltd\\Desktop\\TaskManagement\\TaskManager\\TaskManager.csproj",
       "packagesPath": "C:\\Users\\rajesh.chaudhari\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rajesh.chaudhari\\OneDrive - Azilen Technologies Pvt. Ltd\\Desktop\\Final_CourseManagement\\TaskManager\\TaskManager\\obj\\",
+      "outputPath": "C:\\Users\\rajesh.chaudhari\\OneDrive - Azilen Technologies Pvt. Ltd\\Desktop\\TaskManagement\\TaskManager\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
