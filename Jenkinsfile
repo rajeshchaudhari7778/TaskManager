@@ -19,14 +19,13 @@ pipeline {
                 bat 'dotnet build TaskManager.sln -c Release'
             }
         }
-
         stage('Test') {
             steps {
-                bat 'dotnet test TaskManager.Tests/TaskManager.Tests.csproj --logger:"nunit;LogFilePath=TestResults.xml"'
+                bat 'dotnet test TaskManager.Tests/TaskManager.Tests.csproj --logger:trx --results-directory TestResults'
             }
             post {
                 always {
-                    nunit testResultsPattern: '**/TestResults.xml'
+                    mstest testResultsFile: 'TestResults/*.trx'
                 }
             }
         }
