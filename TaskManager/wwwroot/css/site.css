@@ -1,0 +1,88 @@
+body {
+    background-color: #f0f4f8; /* Light blue-gray background */
+    font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+    background: linear-gradient(90deg, #007bff, #00c4cc); /* Gradient from blue to cyan */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: bold;
+}
+
+.container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+    color: #2c3e50; /* Dark blue for headings */
+}
+
+.table thead th {
+    background-color: #3498db; /* Bright blue for table header */
+    color: white;
+    border: none;
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: #e9f7ef; /* Light green for odd rows */
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9e79f; /* Light yellow for even rows */
+}
+
+.table tbody tr:hover {
+    background-color: #dfe6e9; /* Light gray on hover */
+}
+
+.btn-primary {
+    background-color: #1abc9c; /* Turquoise for Create button */
+    border-color: #1abc9c;
+}
+
+    .btn-primary:hover {
+        background-color: #16a085;
+        border-color: #16a085;
+    }
+
+.btn-outline-primary {
+    color: #3498db; /* Blue for Edit button */
+    border-color: #3498db;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #3498db;
+        color: white;
+    }
+
+.btn-outline-info {
+    color: #f39c12; /* Orange for Details button */
+    border-color: #f39c12;
+}
+
+    .btn-outline-info:hover {
+        background-color: #f39c12;
+        color: white;
+    }
+
+.btn-outline-danger {
+    color: #e74c3c; /* Red for Delete button */
+    border-color: #e74c3c;
+}
+
+    .btn-outline-danger:hover {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+.completed-icon {
+    font-size: 1.2em;
+}

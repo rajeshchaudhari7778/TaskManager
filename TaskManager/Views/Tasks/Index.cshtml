@@ -1,0 +1,47 @@
+﻿@model IEnumerable<TaskManager.Models.Tasks>
+
+@{
+    ViewData["Title"] = "Task Manager";
+}
+
+<h1>Task Manager</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Task</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Completed</th>
+            <th>Created At</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>
+                    @if (item.IsCompleted)
+                    {
+                        <span class="completed-icon text-success">✔</span>
+                    }
+                    else
+                    {
+                        <span class="completed-icon text-danger">✘</span>
+                    }
+                </td>
+                <td>@item.CreatedAt.ToString("MMM dd, yyyy HH:mm") IST</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
