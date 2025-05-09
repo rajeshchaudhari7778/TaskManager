@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    tools {
-        msbuild 'MSBuild'
-    }
     stages {
         stage('Checkout') {
             steps {
@@ -32,6 +29,16 @@ pipeline {
         stage('Publish') {
             steps {
                 bat 'dotnet publish TaskManager/TaskManager.csproj -c Release -o publish'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Stop the IIS site
+                bat 'powershell -command "Stop-Website -Name TaskManager"'
+                // Copy published files to IIS folder
+                bat 'xcopy publish\\* "C:\\inetpub\\wwwroot\\TaskManager" /E /H /C /I /Y'
+                // Start the IIS site
+                bat 'powershell -command "Start-Website -Name TaskManager"'
             }
         }
     }
