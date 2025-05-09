@@ -1,1 +1,2 @@
 bin/ obj/ *.pdb *.dll *.exe *.csproj.user .vscode/ *.sln TaskManager.Tests/TestResults/
+/TaskManager/obj/Debug/net8.0/TaskManager.AssemblyInfo.cs
