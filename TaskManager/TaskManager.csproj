@@ -5,9 +5,5 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-	<ItemGroup>
-		<None Include="wwwroot\**" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="Views\**" CopyToOutputDirectory="PreserveNewest" />
-	</ItemGroup>
 
 </Project>
