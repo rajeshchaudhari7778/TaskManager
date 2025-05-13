@@ -136,59 +136,6 @@
 //     }
 // }
 
-// pipeline {
-//     agent any
-//     stages {
-//         stage('Checkout') {
-//             steps {
-//                 git branch: 'main', url: 'https://github.com/rajeshchaudhari7778/TaskManager.git'
-//             }
-//         }
-//         stage('Restore') {
-//             steps {
-//                 bat 'dotnet restore'
-//             }
-//         }
-//         stage('Build') {
-//             steps {
-//                 bat 'dotnet clean TaskManager.sln -c Release'
-//                 bat 'dotnet build TaskManager.sln -c Release'
-//             }
-//         }
-//         stage('Test') {
-//             steps {
-//                 bat 'dotnet test TaskManager.Tests/TaskManager.Tests.csproj --logger:trx --results-directory TestResults'
-//             }
-//             post {
-//                 always {
-//                     mstest testResultsFile: 'TestResults/*.trx'
-//                 }
-//             }
-//         }
-//         stage('Publish') {
-//             steps {
-//                 bat 'if exist "%WORKSPACE%\\publish" rd /s /q "%WORKSPACE%\\publish"'
-//                 bat 'dotnet publish TaskManager/TaskManager.csproj -c Release -o %WORKSPACE%\\publish --no-restore --no-build /p:CopyOutputSymbolsToPublishDirectory=false'
-//             }
-//         }
-//         stage('Deploy') {
-//             steps {
-//                 lock('deploy-lock') {
-//                     bat 'powershell -command "Stop-Website -Name TaskManager"'
-//                     bat 'powershell -command "if ((Get-WebsiteState -Name TaskManager).Value -eq \'Started\') { exit 1 }"'
-//                     bat 'powershell -command "Restart-WebAppPool -Name TaskManager"'
-//                     bat 'powershell -command "Start-Sleep -Seconds 5"'
-//                     bat 'if exist "C:\\inetpub\\wwwroot\\TaskManager" rd /s /q "C:\\inetpub\\wwwroot\\TaskManager"'
-//                     bat 'mkdir "C:\\inetpub\\wwwroot\\TaskManager"'
-//                     bat 'xcopy "%WORKSPACE%\\publish" "C:\\inetpub\\wwwroot\\TaskManager" /E /H /C /I /Y /S /D'
-//                     bat 'powershell -command "Start-Website -Name TaskManager"'
-//                     bat 'iisreset'
-//                 }
-//             }
-//         }
-//     }
-// }
-
 pipeline {
     agent any
     stages {
@@ -274,17 +221,15 @@ pipeline {
                 script {
                     try {
                         echo "Starting Deploy stage"
-                        lock('deploy-lock') {
-                            bat 'powershell -command "Stop-Website -Name TaskManager"'
-                            bat 'powershell -command "if ((Get-WebsiteState -Name TaskManager).Value -eq \'Started\') { exit 1 }"'
-                            bat 'powershell -command "Restart-WebAppPool -Name TaskManager"'
-                            bat 'powershell -command "Start-Sleep -Seconds 5"'
-                            bat 'if exist "C:\\inetpub\\wwwroot\\TaskManager" rd /s /q "C:\\inetpub\\wwwroot\\TaskManager"'
-                            bat 'mkdir "C:\\inetpub\\wwwroot\\TaskManager"'
-                            bat 'xcopy "%WORKSPACE%\\publish" "C:\\inetpub\\wwwroot\\TaskManager" /E /H /C /I /Y /S /D'
-                            bat 'powershell -command "Start-Website -Name TaskManager"'
-                            bat 'iisreset'
-                        }
+                        bat 'powershell -command "Stop-Website -Name TaskManager"'
+                        bat 'powershell -command "if ((Get-WebsiteState -Name TaskManager).Value -eq \'Started\') { exit 1 }"'
+                        bat 'powershell -command "Restart-WebAppPool -Name TaskManager"'
+                        bat 'powershell -command "Start-Sleep -Seconds 5"'
+                        bat 'if exist "C:\\inetpub\\wwwroot\\TaskManager" rd /s /q "C:\\inetpub\\wwwroot\\TaskManager"'
+                        bat 'mkdir "C:\\inetpub\\wwwroot\\TaskManager"'
+                        bat 'xcopy "%WORKSPACE%\\publish" "C:\\inetpub\\wwwroot\\TaskManager" /E /H /C /I /Y /S /D'
+                        bat 'powershell -command "Start-Website -Name TaskManager"'
+                        bat 'iisreset'
                         echo "Deploy stage completed successfully"
                     } catch (Exception e) {
                         echo "Error in Deploy stage: ${e.message}"
