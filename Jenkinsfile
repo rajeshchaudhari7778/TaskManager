@@ -128,6 +128,7 @@ pipeline {
                 bat 'powershell -command "Restart-WebAppPool -Name TaskManager"'
                 bat 'xcopy "%WORKSPACE%\\publish" "C:\\inetpub\\wwwroot\\TaskManager" /E /H /C /I /Y /S /D'
                 bat 'powershell -command "Start-Website -Name TaskManager"'
+                bat 'iisreset'
             }
         }
     }
