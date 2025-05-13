@@ -151,6 +151,7 @@ pipeline {
         }
         stage('Build') {
             steps {
+                bat 'dotnet clean TaskManager.sln -c Release'
                 bat 'dotnet build TaskManager.sln -c Release'
             }
         }
@@ -166,12 +167,13 @@ pipeline {
         }
         stage('Publish') {
             steps {
+                bat 'if exist "%WORKSPACE%\\publish" rd /s /q "%WORKSPACE%\\publish"'
                 bat 'dotnet publish TaskManager/TaskManager.csproj -c Release -o %WORKSPACE%\\publish --no-restore --no-build /p:CopyOutputSymbolsToPublishDirectory=false'
             }
         }
         stage('Deploy') {
             steps {
-                lock('deploy-lock') { // Ensure only one deployment runs at a time
+                lock('deploy-lock') {
                     bat 'powershell -command "Stop-Website -Name TaskManager"'
                     bat 'powershell -command "if ((Get-WebsiteState -Name TaskManager).Value -eq \'Started\') { exit 1 }"'
                     bat 'powershell -command "Restart-WebAppPool -Name TaskManager"'
