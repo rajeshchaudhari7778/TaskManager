@@ -66,9 +66,6 @@
 //     }
 // }
 
-
-
-
 pipeline {
     agent any
     parameters {
@@ -122,7 +119,7 @@ pipeline {
                 bat 'dotnet publish TaskManager/TaskManager.csproj -c Release -o %WORKSPACE%\\publish --no-restore --no-build /p:CopyOutputSymbolsToPublishDirectory=false'
             }
             post {
-                always {
+                success {
                     archiveArtifacts artifacts: 'publish/**', allowEmptyArchive: false
                 }
             }
@@ -132,15 +129,7 @@ pipeline {
                 expression { params.ONLY_DEPLOY.toBoolean() }
             }
             steps {
-                script {
-                    def lastSuccessfulBuild = currentBuild.rawBuild.getPreviousSuccessfulBuild()
-                    if (lastSuccessfulBuild == null) {
-                        error "No previous successful build found. Cannot proceed with deployment."
-                    }
-                    def buildNumber = lastSuccessfulBuild.number
-                    echo "Fetching artifacts from last successful build: #${buildNumber}"
-                    copyArtifacts projectName: env.JOB_NAME, selector: specific(buildNumber: "${buildNumber}"), target: 'publish'
-                }
+                copyArtifacts projectName: env.JOB_NAME, selector: lastSuccessful(), target: 'publish'
                 bat 'powershell -command "Stop-Website -Name TaskManager"'
                 bat 'powershell -command "if ((Get-WebsiteState -Name TaskManager).Value -eq \'Started\') { exit 1 }"'
                 bat 'powershell -command "Restart-WebAppPool -Name TaskManager"'
