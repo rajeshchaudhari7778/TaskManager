@@ -67,7 +67,6 @@
 // }
 
 
-
 pipeline {
     agent any
     parameters {
@@ -122,7 +121,6 @@ pipeline {
             }
             post {
                 success {
-                    // Store the current build number in a file if the build succeeds
                     writeFile file: 'lastSuccessfulBuild.txt', text: "${env.BUILD_NUMBER}"
                     archiveArtifacts artifacts: 'publish/**,lastSuccessfulBuild.txt', allowEmptyArchive: false
                 }
@@ -134,8 +132,22 @@ pipeline {
             }
             steps {
                 script {
-                    // Fetch the last successful build number from the archived file
-                    copyArtifacts projectName: env.JOB_NAME, selector: lastCompleted(), target: 'lastBuild'
+                    // Find the last build that has the lastSuccessfulBuild.txt artifact
+                    def lastBuildWithArtifacts = null
+                    def maxAttempts = 10 // Limit how far back we look
+                    def attempt = 0
+                    while (lastBuildWithArtifacts == null && attempt < maxAttempts) {
+                        try {
+                            copyArtifacts projectName: env.JOB_NAME, selector: lastCompleted(offset: attempt), filter: 'lastSuccessfulBuild.txt', target: 'lastBuild'
+                            lastBuildWithArtifacts = attempt
+                        } catch (Exception e) {
+                            attempt++
+                            if (attempt == maxAttempts) {
+                                error "No build with lastSuccessfulBuild.txt found in the last ${maxAttempts} builds. Cannot proceed with deployment."
+                            }
+                        }
+                    }
+                    echo "Found a build with lastSuccessfulBuild.txt at offset ${lastBuildWithArtifacts}"
                     def lastBuildNumber = readFile('lastBuild/lastSuccessfulBuild.txt').trim()
                     echo "Last successful build number: ${lastBuildNumber}"
                     // Copy artifacts from the last successful build using the build number
