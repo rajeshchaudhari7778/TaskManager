@@ -14,5 +14,7 @@ namespace TaskManager.Models
         public bool IsCompleted { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public DateTime? DueDate { get; set; }
     }
 }
