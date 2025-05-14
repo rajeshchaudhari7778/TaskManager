@@ -45,3 +45,4 @@ bin/ obj/ *.pdb *.dll *.exe *.csproj.user .vscode/ *.sln TaskManager.Tests/TestR
 /.vs/TaskManager/v17/DocumentLayout.json
 /TaskManager/obj/Debug/net8.0/TaskManager.sourcelink.json
 /TaskManager.Tests/obj/Debug/net8.0/TaskManager.Tests.sourcelink.json
+/.vs/TaskManager/v17/TestStore/0/000.testlog
