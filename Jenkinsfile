@@ -66,7 +66,6 @@
 //     }
 // }
 
-
 pipeline {
     agent any
     parameters {
@@ -121,8 +120,7 @@ pipeline {
             }
             post {
                 success {
-                    writeFile file: 'lastSuccessfulBuild.txt', text: "${env.BUILD_NUMBER}"
-                    archiveArtifacts artifacts: 'publish/**,lastSuccessfulBuild.txt', allowEmptyArchive: false
+                    archiveArtifacts artifacts: 'publish/**', allowEmptyArchive: false
                 }
             }
         }
@@ -131,28 +129,7 @@ pipeline {
                 expression { params.ONLY_DEPLOY.toBoolean() }
             }
             steps {
-                script {
-                    // Find the last build that has the lastSuccessfulBuild.txt artifact
-                    def lastBuildWithArtifacts = null
-                    def maxAttempts = 10 // Limit how far back we look
-                    def attempt = 0
-                    while (lastBuildWithArtifacts == null && attempt < maxAttempts) {
-                        try {
-                            copyArtifacts projectName: env.JOB_NAME, selector: lastCompleted(offset: attempt), filter: 'lastSuccessfulBuild.txt', target: 'lastBuild'
-                            lastBuildWithArtifacts = attempt
-                        } catch (Exception e) {
-                            attempt++
-                            if (attempt == maxAttempts) {
-                                error "No build with lastSuccessfulBuild.txt found in the last ${maxAttempts} builds. Cannot proceed with deployment."
-                            }
-                        }
-                    }
-                    echo "Found a build with lastSuccessfulBuild.txt at offset ${lastBuildWithArtifacts}"
-                    def lastBuildNumber = readFile('lastBuild/lastSuccessfulBuild.txt').trim()
-                    echo "Last successful build number: ${lastBuildNumber}"
-                    // Copy artifacts from the last successful build using the build number
-                    copyArtifacts projectName: env.JOB_NAME, selector: specific(buildNumber: lastBuildNumber), target: 'publish'
-                }
+                copyArtifacts projectName: env.JOB_NAME, selector: lastSuccessful(), target: 'publish'
                 bat 'powershell -command "Stop-Website -Name TaskManager"'
                 bat 'powershell -command "if ((Get-WebsiteState -Name TaskManager).Value -eq \'Started\') { exit 1 }"'
                 bat 'powershell -command "Restart-WebAppPool -Name TaskManager"'
