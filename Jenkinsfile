@@ -70,7 +70,7 @@
 // pipeline {
 //     agent any
 //     parameters {
-//         booleanParam(name: 'DEPLOY', defaultValue: false, description: 'Set to true to deploy the build to IIS')
+//         booleanParam(name: 'DEPLOY', defaultValue: true, description: 'Set to true to deploy the build to IIS')
 //     }
 //     stages {
 //         stage('Checkout') {
