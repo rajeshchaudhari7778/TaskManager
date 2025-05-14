@@ -68,7 +68,6 @@
 
 
 
-
 pipeline {
     agent any
     parameters {
@@ -122,8 +121,10 @@ pipeline {
                 bat 'dotnet publish TaskManager/TaskManager.csproj -c Release -o %WORKSPACE%\\publish --no-restore --no-build /p:CopyOutputSymbolsToPublishDirectory=false'
             }
             post {
-                always {
-                    archiveArtifacts artifacts: 'publish/**', allowEmptyArchive: false
+                success {
+                    // Store the current build number in a file if the build succeeds
+                    writeFile file: 'lastSuccessfulBuild.txt', text: "${env.BUILD_NUMBER}"
+                    archiveArtifacts artifacts: 'publish/**,lastSuccessfulBuild.txt', allowEmptyArchive: false
                 }
             }
         }
@@ -133,13 +134,12 @@ pipeline {
             }
             steps {
                 script {
-                    def lastSuccessfulBuild = currentBuild.rawBuild.getPreviousSuccessfulBuild()
-                    if (lastSuccessfulBuild == null) {
-                        error "No previous successful build found. Cannot proceed with deployment."
-                    }
-                    def buildNumber = lastSuccessfulBuild.number
-                    echo "Fetching artifacts from last successful build: #${buildNumber}"
-                    copyArtifacts projectName: env.JOB_NAME, selector: specific(buildNumber: "${buildNumber}"), target: 'publish'
+                    // Fetch the last successful build number from the archived file
+                    copyArtifacts projectName: env.JOB_NAME, selector: lastCompleted(), target: 'lastBuild'
+                    def lastBuildNumber = readFile('lastBuild/lastSuccessfulBuild.txt').trim()
+                    echo "Last successful build number: ${lastBuildNumber}"
+                    // Copy artifacts from the last successful build using the build number
+                    copyArtifacts projectName: env.JOB_NAME, selector: specific(buildNumber: lastBuildNumber), target: 'publish'
                 }
                 bat 'powershell -command "Stop-Website -Name TaskManager"'
                 bat 'powershell -command "if ((Get-WebsiteState -Name TaskManager).Value -eq \'Started\') { exit 1 }"'
