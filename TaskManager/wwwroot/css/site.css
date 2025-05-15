@@ -22,8 +22,8 @@ body {
 }
 
 h1 {
-    /*color: #2c3e50;*/ /* Dark blue for headings */
-    color: aqua;
+    color: #2c3e50;  
+ 
 }
 
 .table thead th {
@@ -75,7 +75,7 @@ h1 {
     }
 
 .btn-outline-danger {
-    color: yellow; /* Red for Delete button */
+    color: red; /* Red for Delete button */
     border-color: #e74c3c;
 }
 
