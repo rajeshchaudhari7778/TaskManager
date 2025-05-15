@@ -75,7 +75,7 @@ h1 {
     }
 
 .btn-outline-danger {
-    color: red; /* Red for Delete button */
+    color: yellow; /* Red for Delete button */
     border-color: #e74c3c;
 }
 
