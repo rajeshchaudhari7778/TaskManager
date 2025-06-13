@@ -1,6 +1,6 @@
 body {
     background-color: #f0f4f8; /* Light blue-gray background */
-    font-family: 'Arial', sans-serif;
+    font-family: 'Times New Roman', Times, serif, sans-serif;
 }
 
 .navbar {
@@ -18,11 +18,12 @@ body {
     border-radius: 10px;
     padding: 20px;
     margin-top: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.112);
 }
 
 h1 {
-    color: #2c3e50; /* Dark blue for headings */
+    color: #2c3e50;  
+ 
 }
 
 .table thead th {
@@ -74,7 +75,7 @@ h1 {
     }
 
 .btn-outline-danger {
-    color: #e74c3c; /* Red for Delete button */
+    color: red; /* Red for Delete button */
     border-color: #e74c3c;
 }
 
